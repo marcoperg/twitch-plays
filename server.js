@@ -6,12 +6,14 @@ const { connectToChat, exec } = require('./helpers');
 async function main() {
 	const chatClient = await connectToChat('marcopg2');
 
-	const listener = chatClient.onPrivmsg((channel, user, message, msg) => {
-		console.log(message);
+	const listener = chatClient.onPrivmsg((channel, user, rawMessage, msg) => {
+		console.log(rawMessage);
 
-		if (Number(message)) {
-			exec(resolve('./menus.py'), message);
+		if (Number(rawMessage)) {
+			exec(resolve('./menus.py'), rawMessage);
 		}
+
+		const message = rawMessage.toLowerCase();
 
 		switch (message) {
 			// Movement interactions
